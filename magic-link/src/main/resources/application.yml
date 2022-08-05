@@ -14,3 +14,11 @@ spring:
     import: secrets.yml
 server:
   port: 8888
+
+encryption:
+  algorithm: AES
+  variant: CBC
+  padding: PKCS5PADDING
+  secretKeyFactoryAlgorithm: PBKDF2WithHmacSHA256
+  passwordIterations: 65536
+  keyLength: 256

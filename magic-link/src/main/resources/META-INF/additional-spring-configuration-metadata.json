@@ -1,0 +1,29 @@
+{
+  "properties": [
+    {
+      "name": "encryption.variant",
+      "type": "java.lang.String",
+      "description": "Encryption algorithm."
+    },
+    {
+      "name": "encryption.algorithm",
+      "type": "java.lang.String",
+      "description": "Encryption algorithm variant."
+    },
+    {
+      "name": "encryption.secretKeyFactoryAlgorithm",
+      "type": "java.lang.String",
+      "description": "Algorithm used to generate secret key for encryption algorithm."
+    },
+    {
+      "name": "encryption.passwordIterations",
+      "type": "java.lang.Integer",
+      "description": "Specify number of iterations for algorithm."
+    },
+    {
+      "name": "encryption.keyLength",
+      "type": "java.lang.Integer",
+      "description": "Algorithm key length."
+    }
+  ]
+}
