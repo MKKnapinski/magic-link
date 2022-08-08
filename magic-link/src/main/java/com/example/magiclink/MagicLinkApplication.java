@@ -1,6 +1,8 @@
 package com.example.magiclink;
 
+import com.example.magiclink.encrypt.EncryptionService;
 import com.example.magiclink.mail.EmailService;
+import com.example.magiclink.repository.EmailTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,6 +15,12 @@ public class MagicLinkApplication {
 
     @Autowired
     EmailService emailService;
+
+    @Autowired
+    EncryptionService encryptionService;
+
+    @Autowired
+    EmailTokenRepository emailTokenRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(MagicLinkApplication.class, args);
