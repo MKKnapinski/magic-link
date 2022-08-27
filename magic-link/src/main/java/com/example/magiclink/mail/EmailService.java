@@ -13,7 +13,6 @@ public class EmailService {
 
     public void sendSimpleMessage(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("Magic link app");
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
