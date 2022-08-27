@@ -15,5 +15,6 @@ public class EncryptionConfig {
   private String secretKeyFactoryAlgorithm;
   private Integer passwordIterations;
   private Integer keyLength;
+  private String secret;
 
 }

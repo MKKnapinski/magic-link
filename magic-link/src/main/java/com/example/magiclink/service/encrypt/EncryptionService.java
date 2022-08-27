@@ -1,4 +1,4 @@
-package com.example.magiclink.encrypt;
+package com.example.magiclink.service.encrypt;
 
 import static javax.crypto.Cipher.DECRYPT_MODE;
 import static javax.crypto.Cipher.ENCRYPT_MODE;
@@ -30,23 +30,25 @@ public class EncryptionService {
 
   private final EncryptionConfig conf;
 
-  public String encryptString(String algorithm, String input, SecretKey secretKey,
+  public String encryptString(
+      String input,
+      SecretKey secretKey,
       IvParameterSpec initializationVectorSpec)
       throws IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException,
       InvalidAlgorithmParameterException, InvalidKeyException {
-    Cipher cipher = Cipher.getInstance(algorithm);
+    Cipher cipher = Cipher.getInstance(conf.getAlgorithm());
     cipher.init(ENCRYPT_MODE, secretKey, initializationVectorSpec);
     byte[] cipherText = cipher.doFinal(input.getBytes());
     return Base64.getEncoder().encodeToString(cipherText);
   }
 
-  public String decryptString(String algorithm, String encrypted, SecretKey secretKey,
+  public String decryptString(String encrypted, SecretKey secretKey,
       IvParameterSpec initializationVectorSpec)
       throws NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException,
       InvalidAlgorithmParameterException, InvalidKeyException {
-    Cipher cipher = Cipher.getInstance(algorithm);
+    Cipher cipher = Cipher.getInstance(conf.getAlgorithm());
     cipher.init(DECRYPT_MODE, secretKey, initializationVectorSpec);
-    byte[] plainText = cipher.doFinal(Base64.getDecoder().decode(encrypted));
+    byte[] plainText = cipher.doFinal(Base64.getUrlDecoder().decode(encrypted));
     return new String(plainText);
   }
 
@@ -54,11 +56,9 @@ public class EncryptionService {
       IvParameterSpec initializationVector)
       throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException,
       InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
-    Cipher cipher
-        = Cipher.getInstance(
-        conf.getAlgorithm() + "/" + conf.getVariant() + "/" + conf.getPadding());
+    Cipher cipher = Cipher.getInstance(getUsedAlgorithm());
     cipher.init(ENCRYPT_MODE, key, initializationVector);
-    return Base64.getEncoder()
+    return Base64.getUrlEncoder()
         .encodeToString(cipher.doFinal(plainText.getBytes()));
   }
 
@@ -66,10 +66,9 @@ public class EncryptionService {
       IvParameterSpec initializationVector)
       throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException,
       InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
-    Cipher cipher = Cipher.getInstance(
-        conf.getAlgorithm() + "/" + conf.getVariant() + "/" + conf.getPadding());
+    Cipher cipher = Cipher.getInstance(getUsedAlgorithm());
     cipher.init(DECRYPT_MODE, key, initializationVector);
-    return new String(cipher.doFinal(Base64.getDecoder().decode(cipherText)));
+    return new String(cipher.doFinal(Base64.getUrlDecoder().decode(cipherText)));
   }
 
   public SecretKey generateKey(int n) throws NoSuchAlgorithmException {
@@ -95,4 +94,7 @@ public class EncryptionService {
     return new IvParameterSpec(initializationVector);
   }
 
+  public String getUsedAlgorithm() {
+    return conf.getAlgorithm() + "/" + conf.getVariant() + "/" + conf.getPadding();
+  }
 }
